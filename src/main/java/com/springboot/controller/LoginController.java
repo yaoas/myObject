@@ -1,5 +1,8 @@
 package com.springboot.controller;
 
+import com.springboot.common.Constant;
+import com.springboot.common.FtpUtils;
+import com.springboot.common.Utils;
 import com.springboot.entity.UserEntity;
 import com.springboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.UUID;
 
 @Controller
@@ -35,7 +40,7 @@ public class LoginController {
             return "error";
         }
     }
-    //取消点赞
+    //自定义上传图片
     @RequestMapping("/testUpload")
     @ResponseBody
     public  Object testUpload(HttpServletRequest request , MultipartFile file ){
@@ -54,5 +59,35 @@ public class LoginController {
         }
           String returnPath = "http://39.97.237.246/imagess/"+fileName;
         return returnPath;
+    }
+    //ftp上传图片
+    @RequestMapping("/ftpUploadFile")
+    @ResponseBody
+    public  Object ftpUploadFile(HttpServletRequest request,MultipartFile file  ){
+        String fileSuffix =file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+        String fileName = UUID.randomUUID().toString()+fileSuffix;
+        String path = "";
+        try {
+            boolean connect = FtpUtils.connect(Constant.FTP_PATH, Constant.FTP_ADDRESS, Constant.FTP_PORT, Constant.FTP_USERNAME, Constant.FTP_PASSWORD);
+            File files = Utils.multipartFileToFile(file);
+            path = FtpUtils.upload(files,fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return path;
+    }
+    //ftp上传图片
+    @RequestMapping("/ftpUploadFiless")
+    @ResponseBody
+    public  Object ftpUploadFiless(HttpServletRequest request,MultipartFile file ,HttpServletResponse response ){
+
+        try {
+            boolean connect = FtpUtils.connect(Constant.FTP_PATH, Constant.FTP_ADDRESS, Constant.FTP_PORT, Constant.FTP_USERNAME, Constant.FTP_PASSWORD);
+            OutputStream oooo = response.getOutputStream();
+            FtpUtils.downFileByFtp("/webapps/tengli/upload/2627e375-6cca-4103-be0b-b87dce43c733.png",oooo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
