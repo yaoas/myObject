@@ -76,7 +76,7 @@ public class LoginController {
         }
         return path;
     }
-    //ftp上传图片
+    //ftp下载图片
     @RequestMapping("/ftpUploadFiless")
     @ResponseBody
     public  Object ftpUploadFiless(HttpServletRequest request,MultipartFile file ,HttpServletResponse response ){
@@ -89,5 +89,21 @@ public class LoginController {
             e.printStackTrace();
         }
         return "";
+    }
+    @RequestMapping("/ftpDeleteFile")
+    @ResponseBody
+    public  Object ftpDeleteFile(HttpServletRequest request,String url){
+        int i = 1;
+        try {
+            boolean connect = FtpUtils.connect(Constant.FTP_PATH, Constant.FTP_ADDRESS, Constant.FTP_PORT, Constant.FTP_USERNAME, Constant.FTP_PASSWORD);
+            i = FtpUtils.deleteFile(url);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if(i>0){
+            return "成功";
+        }else {
+            return "失败";
+        }
     }
 }

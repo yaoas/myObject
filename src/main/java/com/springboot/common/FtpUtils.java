@@ -71,8 +71,7 @@ public class FtpUtils {
     /**
      * 下载文件
      * <BR/>
-     * @param OutputStream outputStream
-     * @param String url
+
      * @return InputStream
      * @throws IOException
      * @since 1.0.0
@@ -100,5 +99,25 @@ public class FtpUtils {
                 e.printStackTrace();
             }
         }
+    }
+    /**
+     * 删除图片
+     */
+    public  static int  deleteFile(String fileName){
+        int dele = 1;
+        try {
+             dele = ftp.dele(fileName);
+            ftp.logout();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                ftp.disconnect();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return  dele;
     }
 }
