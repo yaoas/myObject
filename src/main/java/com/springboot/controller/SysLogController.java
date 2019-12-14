@@ -7,6 +7,8 @@ import com.springboot.common.base.controller.BaseController;
 import com.springboot.common.utils.R;
 import com.springboot.entity.SysLogEntity;
 import com.springboot.service.SysLogService;
+import org.apache.log4j.Logger;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +19,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/sysLog")
 public class SysLogController extends BaseController {
+    private static Logger log = Logger.getLogger(HelloController.class);
     @Autowired
     private SysLogService sysLogService;
+
+    @Autowired
+    SqlSessionTemplate sqlSessionTemplate;
 
     /**
      * 分页查询列表
@@ -38,6 +44,8 @@ public class SysLogController extends BaseController {
     @PostMapping(value = "/save")
     public R save(@RequestBody SysLogEntity sceneSpotEntity){
         boolean saveFlag = sysLogService.saveOrUpdate(sceneSpotEntity);
+
+        log.info("");
         if (saveFlag) {
             return R.ok("保存成功！");
         } else {

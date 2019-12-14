@@ -60,6 +60,11 @@ public class SysLogEntity extends DataEntity<Long> {
      */
     @TableField(value = "errorMessage")
     private  String errorMessage;
+    /**
+     * sql
+     */
+    @TableField(value = "stringSql")
+    private  String stringSql;
 
 
 

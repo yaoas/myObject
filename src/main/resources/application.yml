@@ -10,3 +10,6 @@ mybatis:
   type-aliases-package: com.springboot.yaoaosai.entity
 server:
   port: 8899
+logging:
+  level:
+    com.springboot.mapper : debug
