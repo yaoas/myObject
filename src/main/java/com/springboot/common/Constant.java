@@ -14,7 +14,7 @@ public class Constant {
     // FTP状态码
     public final static int FTP_REPLY_SUCCESS = 230;
     // FTP存放根路径
-    public final static String FTP_PATH = "/webapps/tengli/upload";
+    public final static String FTP_PATH = "/webapps/longman/upload";
     // Redis缓存名
     public final static String USER = "USER";
 

@@ -71,6 +71,7 @@ public class LoginController {
             boolean connect = FtpUtils.connect(Constant.FTP_PATH, Constant.FTP_ADDRESS, Constant.FTP_PORT, Constant.FTP_USERNAME, Constant.FTP_PASSWORD);
             File files = Utils.multipartFileToFile(file);
             path = FtpUtils.upload(files,fileName);
+            files.delete();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -84,7 +85,7 @@ public class LoginController {
         try {
             boolean connect = FtpUtils.connect(Constant.FTP_PATH, Constant.FTP_ADDRESS, Constant.FTP_PORT, Constant.FTP_USERNAME, Constant.FTP_PASSWORD);
             OutputStream oooo = response.getOutputStream();
-            FtpUtils.downFileByFtp("/webapps/tengli/upload/2627e375-6cca-4103-be0b-b87dce43c733.png",oooo);
+            FtpUtils.downFileByFtp("/webapps/longman/upload/2627e375-6cca-4103-be0b-b87dce43c733.png",oooo);
         } catch (Exception e) {
             e.printStackTrace();
         }

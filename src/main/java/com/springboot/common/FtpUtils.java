@@ -50,6 +50,7 @@ public class FtpUtils {
         boolean b = ftp.storeFile(fileName, input);
         input.close();
         ftp.disconnect();
+        file2.delete();
         if(b){
             return  Constant.FTP_PATH + "/" + fileName;
         }
