@@ -12,6 +12,9 @@ import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.List;
 
+/**
+ * excel导出
+ */
 public class ExcelObject {
 
     private HSSFWorkbook workbook;

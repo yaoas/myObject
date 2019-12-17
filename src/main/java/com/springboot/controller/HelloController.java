@@ -1,6 +1,7 @@
 package com.springboot.controller;
 
 
+import com.springboot.common.RedisConfig.RedisUtil;
 import com.springboot.common.utils.R;
 import com.springboot.service.SysLogService;
 import org.slf4j.Logger;
@@ -20,6 +21,8 @@ import java.io.File;
 @RequestMapping("/hello")
 public class HelloController {
     private static Logger log = LoggerFactory.getLogger(HelloController.class);
+    @Autowired
+    RedisUtil redisUtil;
   @Autowired
   private SysLogService sysLogService;
     @RequestMapping("/index")
@@ -27,9 +30,10 @@ public class HelloController {
         return "index";
     }
 
-    @RequestMapping(value = "/hellos", method = RequestMethod.GET)
+    @RequestMapping(value = "/hellos")
     @ResponseBody
     public Object hello(@RequestParam String name, HttpServletResponse response, MultipartFile myFile) {
+        redisUtil.set("wewe","343434");
 //        log.info("info级别的日志");
            return R.ok();
 

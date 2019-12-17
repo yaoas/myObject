@@ -55,7 +55,7 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilterFactoryBean() {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager());
-        shiroFilter.setLoginUrl("/unauthenticated");
+        shiroFilter.setLoginUrl("/login.html");
         shiroFilter.setUnauthorizedUrl("/unauthorized");
         /*
          * c. 添加jwt过滤器，并在下面注册
