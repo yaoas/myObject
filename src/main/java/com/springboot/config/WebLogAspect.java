@@ -148,7 +148,9 @@ public class WebLogAspect /*implements Interceptor*/ {
         sysLogEntity.setRequestIp(request.getRemoteAddr());
         sysLogEntity.setRequestClassMethod(joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
         sysLogEntity.setRequestParams(Arrays.toString(joinPoint.getArgs()));
-        sysLogEntity.setRequestResponse(ret.toString());
+        if(ret !=null){
+            sysLogEntity.setRequestResponse(ret.toString());
+        }
         sysLogEntity.setRequestTime(String.valueOf(requestTime));
         sysLogEntity.setIfError("0");
         sysLogService.save(sysLogEntity);

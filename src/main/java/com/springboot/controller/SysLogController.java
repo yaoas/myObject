@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/sysLog")
 public class SysLogController extends BaseController {
-    private static Logger log = Logger.getLogger(HelloController.class);
+    //private static Logger log = Logger.getLogger(HelloController.class);
     @Autowired
     private SysLogService sysLogService;
 
@@ -45,7 +45,7 @@ public class SysLogController extends BaseController {
     public R save(@RequestBody SysLogEntity sceneSpotEntity){
         boolean saveFlag = sysLogService.saveOrUpdate(sceneSpotEntity);
 
-        log.info("");
+        //log.info("");
         if (saveFlag) {
             return R.ok("保存成功！");
         } else {

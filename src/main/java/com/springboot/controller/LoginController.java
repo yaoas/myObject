@@ -3,25 +3,28 @@ package com.springboot.controller;
 import com.springboot.common.Constant;
 import com.springboot.common.FtpUtils;
 import com.springboot.common.Utils;
-import com.springboot.entity.UserEntity;
+import com.springboot.jwtShrio.JwtUtil;
 import com.springboot.service.UserService;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
+import lombok.extern.slf4j.Slf4j;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
-
+@Slf4j
 @Controller
 public class LoginController {
-
     //将Service注入Web层
     @Autowired
     UserService userService;
@@ -31,7 +34,7 @@ public class LoginController {
         return "login";
     }
 
-    @RequestMapping(value = "/loginIn",method = RequestMethod.POST)
+  /*  @RequestMapping(value = "/loginIn",method = RequestMethod.POST)
     public String login(String name,String password){
         UserEntity userBean = userService.loginIn(name,password);
         if(userBean!=null){
@@ -39,6 +42,26 @@ public class LoginController {
         }else {
             return "error";
         }
+    }*/
+  @RequestMapping("/login")
+  public ResponseEntity<Map<String, String>> login(String username, String password) {
+      log.info("username:{},password:{}",username,password);
+      Map<String, String> map = new HashMap<>();
+      if (!"tom".equals(username) || !"123".equals(password)) {
+          map.put("msg", "用户名密码错误");
+          return ResponseEntity.ok(map);
+      }
+      JwtUtil jwtUtil = new JwtUtil();
+      Map<String, Object> chaim = new HashMap<>();
+      chaim.put("username", username);
+      String jwtToken = jwtUtil.encode(username, 5 * 60 * 1000, chaim);
+      map.put("msg", "登录成功");
+      map.put("token", jwtToken);
+      return ResponseEntity.ok(map);
+  }
+    @RequestMapping("/testdemo")
+    public ResponseEntity<String> testdemo() {
+        return ResponseEntity.ok("我爱蛋炒饭");
     }
     //自定义上传图片
     @RequestMapping("/testUpload")
