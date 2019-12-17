@@ -73,6 +73,7 @@ public class ShiroConfig {
         Map<String, String> filterRuleMap = new LinkedHashMap<>();
         filterRuleMap.put("/login", "anon");
         filterRuleMap.put("/hello", "anon");
+        filterRuleMap.put("/hello/*", "anon");
         filterRuleMap.put("/logout", "logout");
         filterRuleMap.put("/**", "jwt");
         shiroFilter.setFilterChainDefinitionMap(filterRuleMap);

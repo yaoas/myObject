@@ -7,8 +7,9 @@ import com.springboot.common.base.controller.BaseController;
 import com.springboot.common.utils.R;
 import com.springboot.entity.SysLogEntity;
 import com.springboot.service.SysLogService;
-import org.apache.log4j.Logger;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/sysLog")
 public class SysLogController extends BaseController {
-    //private static Logger log = Logger.getLogger(HelloController.class);
+    private static Logger log = LoggerFactory.getLogger(SysLogController.class);
     @Autowired
     private SysLogService sysLogService;
 

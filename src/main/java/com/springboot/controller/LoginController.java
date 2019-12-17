@@ -6,14 +6,12 @@ import com.springboot.common.Utils;
 import com.springboot.jwtShrio.JwtUtil;
 import com.springboot.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import lombok.extern.slf4j.Slf4j;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -83,6 +81,9 @@ public class LoginController {
           String returnPath = "http://39.97.237.246/imagess/"+fileName;
         return returnPath;
     }
+
+
+
     //ftp上传图片
     @RequestMapping("/ftpUploadFile")
     @ResponseBody
