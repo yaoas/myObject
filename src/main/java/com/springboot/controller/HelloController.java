@@ -32,8 +32,8 @@ public class HelloController {
 
     @RequestMapping(value = "/hellos")
     @ResponseBody
-    public Object hello(@RequestParam String name, HttpServletResponse response, MultipartFile myFile) {
-        redisUtil.set("wewe","343434");
+    public Object hello(HttpServletResponse response, MultipartFile myFile) {
+        redisUtil.set("wewe","343434",10);
 //        log.info("info级别的日志");
            return R.ok();
 

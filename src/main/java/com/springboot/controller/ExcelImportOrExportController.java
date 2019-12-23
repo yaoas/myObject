@@ -2,6 +2,7 @@ package com.springboot.controller;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.springboot.common.poiSecond.ExcelObject;
 import com.springboot.common.utils.R;
 import com.springboot.entity.SysLogEntity;
@@ -42,24 +43,32 @@ public class ExcelImportOrExportController {
     public void download(
             HttpServletResponse response) throws Exception {
         //临时生成测试数据
-        String fileName = "导出excel例子2.xls";
-        String headTitle = "这是头标题";
-        int colunmNum = 10;
-
+        String fileName = "系统日志列表.xls";
+        String headTitle = "系统日志列表";
+        QueryWrapper qw = new QueryWrapper<SysLogEntity>();
+        qw.orderByDesc("create_time");
+        List<SysLogEntity> list = sysLogService.list(qw);
+        //标题列
+        String titleArray[] ={"请求地址","请求方式","请求ip","请求方法","请求参数"};
+        int colunmNum = titleArray.length;
         List<String> headTitleList = new ArrayList<String>();
-        for (int i = 0; i < 10; i++) {
-            headTitleList.add("第" + (i + 1) + "列标题");
+        for (int i = 0; i < colunmNum; i++) {
+            headTitleList.add(titleArray[i]);
         }
         List<List<String>> dataList = new ArrayList<List<String>>();
-        for (int i = 0; i < 5; i++) {
-            List<String> datas = new ArrayList<>();
-            for (int j = 0; j < 9; j++) {
-                datas.add("第" + (i + 1) + "行第" + (j + 1) + "列");
-            }
-            dataList.add(datas);
+        //拼接参数
+        for (int i = 0; i < list.size(); i++) {
+                List<String> datas = new ArrayList<>();
+                SysLogEntity sysLogEntity = list.get(i);
+                datas.add(sysLogEntity.getRequestUrl());
+                datas.add(sysLogEntity.getRequestMode());
+                datas.add(sysLogEntity.getRequestIp());
+                datas.add(sysLogEntity.getRequestClassMethod());
+                datas.add(sysLogEntity.getRequestParams());
+                dataList.add(datas);
         }
         //1-创建一个HSSFWorkbook
-        ExcelObject excel = new ExcelObject("实验数据");
+        ExcelObject excel = new ExcelObject("系统日志");
         //2-写入头标题
         excel.createHeadTile(colunmNum, headTitle);//头标默认写在第一行
         //3-写入行标题
