@@ -45,7 +45,8 @@ public class CustomUploadFile {
         if (file.isEmpty()) return "上传失败，请选择文件";
         //上传到项目某路径下
         //public final static String CUST_LOCALHOST_PATH = "\\src\\main\\resources\\images\\";
-        String filePath = Constant.CUST_LOCALHOST_PATH;
+        String c = System.getProperty("user.dir");
+        String filePath = c + Constant.CUST_LOCALHOST_PATH;
         //生成唯一的文件名
         //生成文件在服务器存放的名字
         String fileSuffix =file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));

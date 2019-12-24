@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.OutputStream;
 import java.util.Hashtable;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
@@ -116,11 +117,13 @@ public class QRCodeUtil {
      * @param needCompress 是否压缩logo
      * @throws Exception
      */
-    public static void encode(String content, String imgPath, String destPath, boolean needCompress) throws Exception {
+    public static String encode(String content, String imgPath, String destPath, boolean needCompress) throws Exception {
         BufferedImage image = QRCodeUtil.createImage(content, imgPath,needCompress); //生成二维码
         mkdirs(destPath);
-        String file = new Random().nextInt(99999) + ".jpg";
-        ImageIO.write(image, FORMAT_NAME, new File(destPath + "/" + file));
+        //String file = new Random().nextInt(99999) + ".jpg";
+        String fileName = UUID.randomUUID().toString()+".jpg";
+        ImageIO.write(image, FORMAT_NAME, new File(destPath + "/" + fileName));
+        return fileName;
     }
     /**
      * 当文件夹不存在时，mkdirs会自动创建多层目录，区别于mkdir．(mkdir如果父目录不存在则会抛出异常)
