@@ -1,4 +1,4 @@
-package com.springboot.common;
+package com.springboot.common.uploadFile;
 
 public class Constant {
     // 默认日期格式
@@ -15,19 +15,16 @@ public class Constant {
     public final static int FTP_REPLY_SUCCESS = 230;
     // FTP存放根路径
     public final static String FTP_PATH = "/webapps/longman/upload";
-    // Redis缓存名
-    public final static String USER = "USER";
+    // 自定义文件上传到服务器路径
+    public final static String CUST_PATH = "/opt/test/image/";
+    // 自定义文件服务器ip
+    public final static String CUST_IP_PATH = "http://39.97.237.246/image/";
+    // 自定义文件上传到项目某路径
+    public final static String CUST_LOCALHOST_PATH = "\\src\\main\\resources\\images\\";
+    //fastdfs的https地址
+    public final static String FASTDFS_PATH = "https://fdfs.baodingjl.com/";
 
-    // 是否
-    public static final String SYS_TRUE = "1";
-    public static final String SYS_FALSE = "0";
 
-    /* 订单状态 */
-    // 是否存在子节点
-    public static final String ORDER_CLD_TOW = "2";
-    public static final String ORDER_CLD_ONE = "1";
-    public static final String ORDER_CLD_EMPTY = "0";
-    /* 提现类型 */
-    public static final String CASH_TYPE_CARD = "1";
-    public static final String CASH_TYPE_REMAIN = "0";
+
+
 }

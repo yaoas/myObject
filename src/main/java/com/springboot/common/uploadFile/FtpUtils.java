@@ -1,13 +1,8 @@
-package com.springboot.common;
+package com.springboot.common.uploadFile;
 
-import com.jfinal.kit.PropKit;
-import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 
 public class FtpUtils {

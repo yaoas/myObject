@@ -1,26 +1,19 @@
 package com.springboot.config;
 
 import com.alibaba.fastjson.JSONObject;
-import com.springboot.common.HttpContextUtils;
+import com.springboot.common.uploadFile.HttpContextUtils;
 import com.springboot.entity.SysLogEntity;
 import com.springboot.service.SysLogService;
-import org.apache.ibatis.executor.statement.StatementHandler;
-import org.apache.ibatis.plugin.*;
-import org.apache.ibatis.session.ResultHandler;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Field;
-import java.sql.Statement;
 import java.util.Arrays;
-import java.util.Properties;
 
 
 /***

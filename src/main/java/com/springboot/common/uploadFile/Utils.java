@@ -1,4 +1,4 @@
-package com.springboot.common;
+package com.springboot.common.uploadFile;
 
 import org.springframework.web.multipart.MultipartFile;
 

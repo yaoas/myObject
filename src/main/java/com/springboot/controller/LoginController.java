@@ -1,11 +1,14 @@
 package com.springboot.controller;
 
-import com.springboot.common.Constant;
-import com.springboot.common.FtpUtils;
-import com.springboot.common.Utils;
+import com.springboot.common.uploadFile.Constant;
+import com.springboot.common.uploadFile.CustomUploadFile;
+import com.springboot.common.uploadFile.FtpUtils;
+import com.springboot.common.uploadFile.Utils;
+import com.springboot.common.utils.R;
 import com.springboot.jwtShrio.JwtUtil;
 import com.springboot.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.internal.util.privilegedactions.GetResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,9 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -62,12 +63,15 @@ public class LoginController {
         return ResponseEntity.ok("我爱蛋炒饭");
     }
     //自定义上传图片
-    @RequestMapping("/testUpload")
+    @RequestMapping("/hello/testUpload")
     @ResponseBody
     public  Object testUpload(HttpServletRequest request , MultipartFile file ){
         if (file.isEmpty()) return "上传失败，请选择文件";
         //上传到服务器
-        String filePath = "/opt/lvyouimages/imagess/";
+        //需要在服务器上用nginx把image/映射到/opt/test/image/下面
+       // String filePath = "D:\\";
+        String c = System.getProperty("user.dir");
+        String filePath = c+"\\src\\main\\resources\\images\\";
         //生成唯一的文件名
         //生成文件在服务器存放的名字
         String fileSuffix =file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
@@ -78,10 +82,19 @@ public class LoginController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-          String returnPath = "http://39.97.237.246/imagess/"+fileName;
+          String returnPath = "http://39.97.237.246/image/"+fileName;
         return returnPath;
     }
-
+    @RequestMapping("/hello/testDown")
+    @ResponseBody
+    public Object logDownload(String fileName, HttpServletResponse response) throws Exception {
+        boolean s = CustomUploadFile.downToHostlocal(fileName, response);
+        if(s){
+            return R.ok();
+        }else {
+            return R.fail();
+        }
+    }
 
 
     //ftp上传图片
