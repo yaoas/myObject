@@ -98,7 +98,7 @@ public class LoginController {
 
 
     //ftp上传图片
-    @RequestMapping("/ftpUploadFile")
+    @RequestMapping("/hello/ftpUploadFile")
     @ResponseBody
     public  Object ftpUploadFile(HttpServletRequest request,MultipartFile file  ){
         String fileSuffix =file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
