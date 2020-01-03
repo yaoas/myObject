@@ -204,6 +204,12 @@
             <artifactId>jdom</artifactId>
             <version>1.1</version>
         </dependency>
+        <!-- 链接linux的ftp -->
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch</artifactId>
+            <version>0.1.49</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>

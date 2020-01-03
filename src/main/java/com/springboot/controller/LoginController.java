@@ -8,7 +8,6 @@ import com.springboot.common.utils.R;
 import com.springboot.jwtShrio.JwtUtil;
 import com.springboot.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.validator.internal.util.privilegedactions.GetResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,6 +20,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
 @Slf4j
 @Controller
 public class LoginController {
@@ -115,18 +115,23 @@ public class LoginController {
         return path;
     }
     //ftp下载图片
-    @RequestMapping("/ftpUploadFiless")
+    @RequestMapping("/hello/ftpUploadFiless")
     @ResponseBody
-    public  Object ftpUploadFiless(HttpServletRequest request,MultipartFile file ,HttpServletResponse response ){
-
+    public  void ftpUploadFiless(HttpServletRequest request,MultipartFile file ,HttpServletResponse response ){
         try {
+            OutputStream out = response.getOutputStream();
+            FtpJSchTestLinux ftp = new FtpJSchTestLinux();
+            ftp.download("",out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+     /*   try {
             boolean connect = FtpUtils.connect(Constant.FTP_PATH, Constant.FTP_ADDRESS, Constant.FTP_PORT, Constant.FTP_USERNAME, Constant.FTP_PASSWORD);
             OutputStream oooo = response.getOutputStream();
             FtpUtils.downFileByFtp("/webapps/longman/upload/2627e375-6cca-4103-be0b-b87dce43c733.png",oooo);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        return "";
+        }*/
     }
     @RequestMapping("/ftpDeleteFile")
     @ResponseBody
