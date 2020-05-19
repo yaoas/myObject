@@ -1,13 +1,18 @@
 package com.springboot.jwtShrio;
 
+import com.springboot.common.RedisConfig.RedisUtil;
+import com.springboot.common.utils.SpringContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.web.filter.AccessControlFilter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 
 /*
  * 自定义一个Filter，用来拦截所有的请求判断是否携带Token
@@ -16,6 +21,8 @@ import java.io.IOException;
  * */
 @Slf4j
 public class JwtFilter extends AccessControlFilter {
+    @Autowired
+    RedisUtil redisUtil;
     /*
      * 1. 返回true，shiro就直接允许访问url
      * 2. 返回false，shiro才会根据onAccessDenied的方法的返回值决定是否允许访问url
@@ -37,9 +44,33 @@ public class JwtFilter extends AccessControlFilter {
 
         //所以以后发起请求的时候就需要在Header中放一个Authorization，值就是对应的Token
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        String jwt = request.getHeader("Authorization");
+        String jwtArrays = request.getHeader("Authorization");
+        //从缓存里面获取token是否过期,如果过期直接返回false
+        Object o = redisUtil.get(jwtArrays);
+        String stringToken = String.valueOf(o);
+        if(stringToken==null || "".equals(stringToken)){
+             return false;
+         }
+        //如果没有过期，直接拿出token
+        String[] s = jwtArrays.split("_");
+        String jwtName =  s[0];
+        String jwt = stringToken;
+        String newToken = "";
+        //判断token过期
+        JwtUtil jwtUtil = new JwtUtil();
+        Date expiration = jwtUtil.decode(jwt).getExpiration();
+        boolean before = expiration.before(new Date());
+        // true:过期   false:没过期
+        if(before){
+
+            //刷新token
+            newToken = jwtUtil.createToken(jwtName);
+            //更新缓存对应的值
+            redisUtil.set(jwtArrays,newToken,20*60);
+        }
+
         log.info("请求的 Header 中藏有 jwtToken {}", jwt);
-        JwtToken jwtToken = new JwtToken(jwt);
+        JwtToken jwtToken = new JwtToken(newToken);
         /*
          * 下面就是固定写法
          * */

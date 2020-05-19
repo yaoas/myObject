@@ -1,5 +1,6 @@
 package com.springboot.controller;
 
+import com.springboot.common.RedisConfig.RedisUtil;
 import com.springboot.common.uploadFile.Constant;
 import com.springboot.common.uploadFile.CustomUploadFile;
 import com.springboot.common.uploadFile.FtpUtils;
@@ -27,6 +28,8 @@ public class LoginController {
     //将Service注入Web层
     @Autowired
     UserService userService;
+    @Autowired
+    RedisUtil redisUtil;
 
     @RequestMapping("/loginsss")
     public String show(){
@@ -54,8 +57,10 @@ public class LoginController {
       Map<String, Object> chaim = new HashMap<>();
       chaim.put("username", username);
       String jwtToken = jwtUtil.encode(username, 5 * 60 * 1000, chaim);
+      String returnData = username + "_" +jwtToken;
+      redisUtil.set(returnData,jwtToken,20*60);
       map.put("msg", "登录成功");
-      map.put("token", jwtToken);
+      map.put("token", returnData);
       return ResponseEntity.ok(map);
   }
     @RequestMapping("/testdemo")
