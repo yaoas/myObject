@@ -1,11 +1,9 @@
 package com.springboot.jwtShrio;
 
 import com.springboot.common.RedisConfig.RedisUtil;
-import com.springboot.common.utils.SpringContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -14,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 
+import static com.springboot.common.utils.SpringContextHolder.getBean;
+
 /*
  * 自定义一个Filter，用来拦截所有的请求判断是否携带Token
  * isAccessAllowed()判断是否携带了有效的JwtToken
@@ -21,8 +21,6 @@ import java.util.Date;
  * */
 @Slf4j
 public class JwtFilter extends AccessControlFilter {
-    @Autowired
-    RedisUtil redisUtil;
     /*
      * 1. 返回true，shiro就直接允许访问url
      * 2. 返回false，shiro才会根据onAccessDenied的方法的返回值决定是否允许访问url
@@ -39,18 +37,19 @@ public class JwtFilter extends AccessControlFilter {
      */
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
+        RedisUtil bean = getBean(RedisUtil.class);
         log.warn("onAccessDenied 方法被调用");
         //这个地方和前端约定，要求前端将jwtToken放在请求的Header部分
-
         //所以以后发起请求的时候就需要在Header中放一个Authorization，值就是对应的Token
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String jwtArrays = request.getHeader("Authorization");
         //从缓存里面获取token是否过期,如果过期直接返回false
-        Object o = redisUtil.get(jwtArrays);
+        Object o = bean.get(jwtArrays);
+        if(o==null || "".equals(o)){
+            return false;
+        }
         String stringToken = String.valueOf(o);
-        if(stringToken==null || "".equals(stringToken)){
-             return false;
-         }
+
         //如果没有过期，直接拿出token
         String[] s = jwtArrays.split("_");
         String jwtName =  s[0];
@@ -66,7 +65,9 @@ public class JwtFilter extends AccessControlFilter {
             //刷新token
             newToken = jwtUtil.createToken(jwtName);
             //更新缓存对应的值
-            redisUtil.set(jwtArrays,newToken,20*60);
+            bean.set(jwtArrays,newToken,20*60);
+        }else {
+            newToken=stringToken;
         }
 
         log.info("请求的 Header 中藏有 jwtToken {}", jwt);

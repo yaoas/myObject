@@ -3,6 +3,11 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Spring的ApplicationContext的持有者,可以用静态方法的方式获取spring容器中的bean
@@ -40,6 +45,10 @@ public class SpringContextHolder implements ApplicationContextAware {
         if (SpringContextHolder.applicationContext == null) {
             throw new RuntimeException("applicaitonContext属性为null,请检查是否注入了SpringContextHolder!");
         }
+    }
+    public <T> T getBean(Class<T> clazz, ServletRequest request){
+        WebApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
+        return applicationContext.getBean(clazz);
     }
 
 }
