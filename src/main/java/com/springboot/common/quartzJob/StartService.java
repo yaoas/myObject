@@ -1,0 +1,24 @@
+package com.springboot.common.quartzJob;
+
+import com.springboot.testLayuiController.testPoiAndQuartz;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+/**
+ * 继承Application接口后项目启动时会按照执行顺序执行run方法
+ * 通过设置Order的value来指定执行的顺序
+ */
+@Slf4j
+@Component
+public class StartService implements CommandLineRunner {
+    @Override
+    public void run(String... args) throws Exception {
+        log.info("执行StartService");
+        testPoiAndQuartz orderInfoController = new testPoiAndQuartz();
+        orderInfoController.task();
+
+    }
+
+
+}
