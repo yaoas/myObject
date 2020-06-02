@@ -1,4 +1,4 @@
 请求完登录接口后
 把返回的参数token放在请求头
-Authorization这个字段，去请求其他接口 参数用户名_token
+Authorization这个字段，去请求其他接口 参数 用户名_token
 这样就算验证登录过了
