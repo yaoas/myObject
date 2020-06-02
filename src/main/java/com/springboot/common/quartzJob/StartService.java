@@ -10,7 +10,8 @@ import org.springframework.stereotype.Component;
  * 通过设置Order的value来指定执行的顺序
  */
 @Slf4j
-@Component
+//放开注释，开启定时
+//@Component
 public class StartService implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
